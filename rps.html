@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rock Paper Scissors</title>
+    </head>
+    <body>
+        <script>
+            function computerPlay() {
+                var el = Math.random() * 3;
+                switch (true){
+                    case el <= 1:
+                        return "s";
+                        break;
+                    case el <= 2:
+                        return "p";
+                        break;
+                    default:
+                        return "r";
+                }
+            }
+            var comp = computerPlay();
+            var play = "rock";
+            
+            function playRound(playerSelection, computerSelection){
+                playerSelection = playerSelection.toLowerCase();
+                if (playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissors"){
+                    console.log("invalid element!");
+                    return 0;
+                }
+                var compStr;
+                if (computerSelection === "p"){
+                    compStr = "Paper";
+                } else if (computerSelection === "s"){
+                    compStr = "Scissors";
+                } else {compStr = "Rock";}
+
+                console.log("Computer chose: "+compStr);
+                
+                switch (true){
+                    case playerSelection == "rock":
+                        switch (true){
+                            case computerSelection === "s":
+                                return "You won!";
+                            case computerSelection === "p":
+                                return "You lost!";
+                            default:
+                                return "It was a tie!";
+                        }
+                    case playerSelection == "paper":
+                        switch (true){
+                            case computerSelection === "s":
+                                return "You lost!";
+                            case computerSelection === "r":
+                                return "You won!";
+                            default:
+                                return "It was a tie!";
+                        }
+                    default:
+                        switch (true){
+                            case computerSelection === "r":
+                                return "You lost!";
+                            case computerSelection === "p":
+                                return "You won!";
+                            default:
+                                return "It was a tie!";
+                        }
+        
+                    }
+                }
+
+            function game(){
+                for(var i = 0; i < 5; i++){
+                    var p = prompt("Choose r p or s: ");
+                    var c = computerPlay();
+                    console.log(playRound(p, c));
+                }
+            }
+            
+        </script>
+    </body>
+</html>
