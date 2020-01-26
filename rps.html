@@ -2,9 +2,45 @@
 <html>
     <head>
         <title>Rock Paper Scissors</title>
+        <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="rps.css">
+        
     </head>
     <body>
+        <div class="display">
+            <span>
+                <div class="score">
+                    <div id="playerScore"><span>Player Score: </span><span id="pS"></span></div>
+                    <div id="compScore"><span>Computer Score: </span><span id="cS"></span></div>
+                </div>
+                <div class="compSelection">
+                    Computer Chose: <span id="cSel"></span>
+                </div>
+                <div class="playSelection">
+                    You Chose: <span id="pSel"></span>
+                </div>
+            </span>
+            <div class="win_loss">
+
+            </div>
+            <div class="round">
+                
+            </div>
+        </div>
+        <div class="btn-box">
+            <button id="rock" class="button1"><span>Rock</span></button>
+            
+            <button id="paper" class="button2"><span>Paper</span></button>
+            
+            <button id="scissors" class="button3"><span>Scissors</span></button>
+        </div>
+
         <script>
+            let gameState = false;
+            let compScore = 0;
+            let playerScore = 0;
+            let round = 0;
+
             function computerPlay() {
                 var el = Math.random() * 3;
                 switch (true){
@@ -22,6 +58,7 @@
             var play = "rock";
             
             function playRound(playerSelection, computerSelection){
+                round++;
                 playerSelection = playerSelection.toLowerCase();
                 if (playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissors"){
                     console.log("invalid element!");
@@ -34,14 +71,18 @@
                     compStr = "Scissors";
                 } else {compStr = "Rock";}
 
-                console.log("Computer chose: "+compStr);
+                //console.log("Computer chose: "+compStr);
+                displayCompSel(compStr);
+                displayPlaySel(playerSelection);
                 
                 switch (true){
                     case playerSelection == "rock":
                         switch (true){
                             case computerSelection === "s":
+                                playerScore++;
                                 return "You won!";
                             case computerSelection === "p":
+                                compScore++;
                                 return "You lost!";
                             default:
                                 return "It was a tie!";
@@ -49,8 +90,10 @@
                     case playerSelection == "paper":
                         switch (true){
                             case computerSelection === "s":
+                                compScore++;
                                 return "You lost!";
                             case computerSelection === "r":
+                                playerScore++;
                                 return "You won!";
                             default:
                                 return "It was a tie!";
@@ -58,8 +101,10 @@
                     default:
                         switch (true){
                             case computerSelection === "r":
+                                compScore++;
                                 return "You lost!";
                             case computerSelection === "p":
+                                playerScore++;
                                 return "You won!";
                             default:
                                 return "It was a tie!";
@@ -75,7 +120,51 @@
                     console.log(playRound(p, c));
                 }
             }
-            
+
+            const buttons = document.querySelectorAll("button");
+
+            buttons.forEach(function(e) {
+                e.addEventListener("click", function(){
+                    const pSelection = e.getAttribute('id');
+                    //console.log(playRound(pSelection, computerPlay()));
+                    winLoss(playRound, pSelection);
+                    updateScores();
+                    displayRound();
+                });
+            });
+
+            //function to dispay win or loss status
+            function winLoss (playRoundfunc, pSel){
+                const w = document.querySelector(".win_loss");
+                w.textContent = playRoundfunc(pSel, computerPlay());
+            };
+
+            //function to display player's selection
+            function displayPlaySel(sel) {
+                const pSel = document.querySelector("#pSel");
+                pSel.textContent = sel;
+            };
+
+            //function to display the computer's selection
+            function displayCompSel(sel) {
+                const cSel = document.querySelector("#cSel");
+                cSel.textContent = sel;
+            };
+
+            //function to display round
+            function displayRound() {
+                const r = document.querySelector(".round");
+                r.textContent = `Round: ${round}`;
+            }
+
+            //function to update scoreboard
+            function updateScores() {
+                const p = document.querySelector("#pS");
+                const c = document.querySelector("#cS");
+                p.textContent = playerScore;
+                c.textContent = compScore;
+            };
+
         </script>
     </body>
 </html>
