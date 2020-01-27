@@ -59,6 +59,10 @@
             
             function playRound(playerSelection, computerSelection){
                 round++;
+                if (round === 6){
+                    gameOver();
+                    return 0;
+                }
                 playerSelection = playerSelection.toLowerCase();
                 if (playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissors"){
                     console.log("invalid element!");
@@ -80,10 +84,10 @@
                         switch (true){
                             case computerSelection === "s":
                                 playerScore++;
-                                return "You won!";
+                                return "Round won!";
                             case computerSelection === "p":
                                 compScore++;
-                                return "You lost!";
+                                return "Round lost!";
                             default:
                                 return "It was a tie!";
                         }
@@ -91,10 +95,10 @@
                         switch (true){
                             case computerSelection === "s":
                                 compScore++;
-                                return "You lost!";
+                                return "Round lost!";
                             case computerSelection === "r":
                                 playerScore++;
-                                return "You won!";
+                                return "Round won!";
                             default:
                                 return "It was a tie!";
                         }
@@ -102,10 +106,10 @@
                         switch (true){
                             case computerSelection === "r":
                                 compScore++;
-                                return "You lost!";
+                                return "Round lost!";
                             case computerSelection === "p":
                                 playerScore++;
-                                return "You won!";
+                                return "Round won!";
                             default:
                                 return "It was a tie!";
                         }
@@ -163,6 +167,41 @@
                 const c = document.querySelector("#cS");
                 p.textContent = playerScore;
                 c.textContent = compScore;
+            };
+
+            //function for when a game ends
+            function gameOver() {
+                const div = document.querySelector("div");
+                const screen = document.createElement("div");
+                const replayBtn = document.createElement("button");
+                screen.classList.add("gameOver");
+                if (playerScore > compScore){
+                    screen.textContent = `YOU WON!\n\nYOUR SCORE: ${playerScore}\r\nCOMPUTER'S SCORE: ${compScore}`;
+                } else if (playerScore < compScore){
+                    screen.textContent = `YOU LOST!\n\nYOUR SCORE: ${playerScore}\nCOMPUTER'S SCORE: ${compScore}`;
+                } else screen.textContent = "IT WAS A TIE!"+"\n\n"+`YOUR SCORE: ${playerScore}\nCOMPUTER'S SCORE: ${compScore}`;
+                replayBtn.textContent = "Play Again?";
+                replayBtn.classList.add("replayBtn");
+
+                document.querySelector("body").insertBefore(screen, div);
+                screen.appendChild(replayBtn);
+                replayBtn.addEventListener("click", reset);
+                console.log("is ther?");
+            };
+
+            //function to reset the
+            function reset() {
+                const screen = document.querySelector(".gameOver");
+                const replayBtn = document.querySelector(".gameOver button");                screen.removeChild(replayBtn);
+                document.querySelector("body").removeChild(screen);
+                playerScore = 0;
+                compScore = 0;
+                round = 0;
+                document.querySelector(".win_loss").textContent = "";
+                updateScores();
+                displayCompSel("");
+                displayPlaySel("");
+                displayRound();
             };
 
         </script>
